@@ -1,0 +1,38 @@
+services:
+  db1:
+    image: postgres:14.18
+    container_name: backend-db-container
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: 123
+    volumes:
+      - "lyheng_postgres_data:/var/lib/postgresql/data"
+    networks:
+      - backend
+
+  homework_backend:
+    build: ./docker-compose-homework
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://backend-db-container:5432/postgres
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 123
+    ports:
+      - 8081:8080
+    depends_on:
+      - db1
+    networks:
+      - backend
+  
+networks:
+  backend:
+    driver: bridge
+
+volumes:
+  lyheng_postgres_data:
+
+# sudo docker run -d --name [container-name] -p 5432:5432 \
+#     -e POSTGRES_PASSWORD=123 \
+#     -e POSTGRES_USER=postgres \
+#     -e POSTGRES_DB=todoDB \
+#     -v postgres-data:/var/lib/postgresql/data \ 
+#     postgres
