@@ -3,8 +3,6 @@ WORKDIR /app
 
 # Copy the Maven descriptor first (for dependency download optimizations)
 COPY gradle ./gradle
-COPY bin ./bin
-COPY .gradle ./.gradle
 COPY src ./src
 COPY settings.gradle .
 COPY build.gradle .
